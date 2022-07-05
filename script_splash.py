@@ -81,45 +81,51 @@ if __name__=='__main__':
     # Interaction avec l'utilisateur : Numéro de la simulation à analyser
     simulationnumber=2
     argv = sys.argv[1:]
-    
+    specialsimulation=''
     try:
-        options, args = getopt.getopt(argv, "n:",
-                                   ["simulationnumber ="])
+        options, args = getopt.getopt(argv, "n:s:",
+                                   ["simulationnumber =",
+                                    "simulationspecial ="])
     except:
         print("Il y a un problème ...")
      
     for name, value in options:
         if name in ['-n', '--simulationnumber']:
             simulationnumber = int(value)
+        if name in ['-s','--simulationspecial']:
+            specialsimulation = value
     
-    # !!! Se placer dans le répertoire concerné avant de lancer le programme !!!
-    # Faire une liste des simulations à transformer
-    files=os.listdir() #Linux
-    # Récupère les noms des simulations
-    files_setup=[i.split(".")[0] for i in files if i.endswith('.setup') and i.startswith('S%s'%(simulationnumber))]
-    # Récupère les fichiers .mp4
-    files_Plot=os.listdir('/home/ppajuelo/Run/Plot') #Linux
-    files_plot_mp4 = [i.split(".")[0][5:] for i in files_Plot if i.endswith('.mp4')]
-    # On demande à l'utilisateur si on doit tout écraser 
-    ecraser=input('Rewrite all ? (O/N) : ')
-    if ecraser=='O':
-        for setup in files_setup:
-            analyzer=0
-            for mp4 in files_plot_mp4:
-                if setup==mp4:
-                    print('%s.mp4 already exists !'%(setup))
-                    make_video(setup,'y')
-                    analyzer+=1
-            if analyzer==0:
-                make_video(setup,'n')
-    if ecraser=='N':
-        for setup in files_setup:
-            analyzer=0
-            for mp4 in files_plot_mp4:
-                if setup==mp4:
-                    print('%s.mp4 already exists !'%(setup))
-                    analyzer+=1
-            if analyzer==0:
-                make_video(setup,'n')
-    
+    if len(specialsimulation)!=0:
+        make_video(specialsimulation,'y')
+    else:
+        # !!! Se placer dans le répertoire concerné avant de lancer le programme !!!
+        # Faire une liste des simulations à transformer
+        files=os.listdir() #Linux
+        # Récupère les noms des simulations
+        files_setup=[i.split(".")[0] for i in files if i.endswith('.setup') and i.startswith('S%s'%(simulationnumber))]
+        # Récupère les fichiers .mp4
+        files_Plot=os.listdir('/home/ppajuelo/Run/Plot') #Linux
+        files_plot_mp4 = [i.split(".")[0][5:] for i in files_Plot if i.endswith('.mp4')]
+        # On demande à l'utilisateur si on doit tout écraser 
+        ecraser=input('Rewrite all ? (O/N) : ')
+        if ecraser=='O':
+            for setup in files_setup:
+                analyzer=0
+                for mp4 in files_plot_mp4:
+                    if setup==mp4:
+                        print('%s.mp4 already exists !'%(setup))
+                        make_video(setup,'y')
+                        analyzer+=1
+                if analyzer==0:
+                    make_video(setup,'n')
+        if ecraser=='N':
+            for setup in files_setup:
+                analyzer=0
+                for mp4 in files_plot_mp4:
+                    if setup==mp4:
+                        print('%s.mp4 already exists !'%(setup))
+                        analyzer+=1
+                if analyzer==0:
+                    make_video(setup,'n')
+        
     print('End of script !')
