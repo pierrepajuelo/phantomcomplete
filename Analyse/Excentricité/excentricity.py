@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 
 # Programme principal
 if __name__=='__main__':
-    path = 'C:/Users/pierr/Documents/GitHub/phantomcomplete/Analyse/DATA'
+    path = 'C:/Users/pierr/Documents/GitHub/phantomcomplete/Analyse/Excentricité/DATA'
     files = os.listdir(path)
     files_data = [i for i in files if i.startswith('sinks')]
     # files_ascii = [i for i in files if i.endswith('.ascii')]
@@ -37,7 +37,7 @@ if __name__=='__main__':
         radius_time = data['r'].tolist()
         plt.figure()
         plt.plot(time,radius_time)
-        plt.title("Evolution de l'excentricité au cours du temps")
+        plt.title("Evolution du rayon au cours du temps")
         plt.xlabel('Temps')
         plt.ylabel('Rayon')
         plt.savefig(path+'/'+'plotradius%s.png'%(sinks_file))
@@ -50,7 +50,7 @@ if __name__=='__main__':
             radius_criterium = 800
             
             time_interest = time_arr[radius_time_arr<radius_criterium]
-            print("Zone d'intérêt : ",time_interest)
+            # print("Zone d'intérêt : ",time_interest)
         if sinks_file.endswith('2'):
             fig, ax = plt.subplots()
             ax.plot(time,eccentricity_time)
