@@ -31,7 +31,7 @@ if __name__=='__main__':
         plt.xlabel('Temps')
         plt.ylabel('Excentricité')
         plt.ylim(0,1)
-        plt.savefig(path+'/'+'ploteccentricty%s.png'%(sinks_file))
+        plt.savefig(path+'/'+'ploteccentricty_%s.png'%(sinks_file))
         
         # Study of radius over time
         radius_time = data['r'].tolist()
@@ -40,7 +40,7 @@ if __name__=='__main__':
         plt.title("Evolution du rayon au cours du temps")
         plt.xlabel('Temps')
         plt.ylabel('Rayon')
-        plt.savefig(path+'/'+'plotradius%s.png'%(sinks_file))
+        plt.savefig(path+'/'+'plotradius_%s.png'%(sinks_file))
 
 
         # Show flyby passage
@@ -61,6 +61,6 @@ if __name__=='__main__':
             plt.xlabel('Temps')
             plt.ylabel('Excentricité')
             plt.xlim(0,50000)
-            plt.savefig(path+'/'+'radiusstudy.png')
+            plt.savefig(path+'/'+'radiusstudy_%s.png'%(sinks_file))
     print('End of program !')
     plt.close('all')
