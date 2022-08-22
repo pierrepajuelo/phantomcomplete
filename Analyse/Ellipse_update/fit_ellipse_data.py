@@ -51,10 +51,13 @@ def read_header( file ):
 
 if __name__=='__main__':
     # Filename
-    path = 'C:/Users/pierr/Documents/STAGE_L3'
+    # path = 'C:/Users/pierr/Documents/STAGE_L3'
+    path = 'D:/Stage/PSMN/Plot_Rapport'
     files = os.listdir(path)
     files_dump = [i for i in files if i.endswith('.pix')]
-    for dump in files_dump:
+    for ndump,dump in enumerate(files_dump):
+        if ndump==1:
+            continue
         # Chargement des données
         image_originale = np.loadtxt(path+'/'+dump)
         # Lecture des données concernant l'image
@@ -72,7 +75,7 @@ if __name__=='__main__':
         plt.title('Image originale')
 
         # Finding coordinates 
-        list_test = np.where(image_originale>-0.1)
+        list_test = np.where(image_originale>-0.4)
         X = list_test[0]
         Y = list_test[1]
         plt.plot(Y,X,'+',ms=1,label='Marqueurs')

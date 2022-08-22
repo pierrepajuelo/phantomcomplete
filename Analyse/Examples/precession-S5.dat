@@ -1,0 +1,3 @@
+# tilt and twist with time for the binary orbit, the disc and relative values, and errors, in degrees
+# [00 n]   [01        time]   [02    tilt_orb]   [03   twist_orb]   [04   tilt_disc]   [05  twist_disc]   [06    tilt_rel]   [07   twist_rel]   [08     err_ang]
+      54   2.5360226442E+04   6.1226923664E-01  -1.6302657640E+02   4.1094232740E+01   5.6230927864E+01   4.1569803100E+01  -1.4118096143E+02   7.4102825409E+00

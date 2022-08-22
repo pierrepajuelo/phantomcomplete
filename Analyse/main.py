@@ -29,9 +29,13 @@ import traceback
 # Importation des librairies personnelles
 from spirales import *
 from traitement import *
-from minima import *
+# from minima import *
 from fit import *
-from HD34700 import *
+# from HD34700 import *
+
+
+# Correction des centres de l'image
+from Ellipse_update.ellipse_function import ellipse_center
 #Accélération de python
 #from numba import jit
 #@jit(nopython=True, parallel = True)
@@ -228,6 +232,7 @@ if __name__=="__main__":
                 precession_data = open(Folder_name+'/precession.dat', 'r')
             if nfile==1:
                 precession_data = open(Folder_name+'/precession-S5.dat', 'r')
+                continue
             for n,line in enumerate(precession_data):
                 line = line.strip()
                 columns = line.split()
@@ -252,7 +257,10 @@ if __name__=="__main__":
             PA_image = float(PA_real)
             # Inclinaison_Image = 40.9
             Inclinaison_Image = float(Inclinaison_real)
-            img,img4,image_polar,xmin,xmax,ymin,ymax,vmin,vmax,coef=traitement(filename,radius=400,PA=PA_image,inclinaison=Inclinaison_Image)
+            center_ellipse=ellipse_center(file,Folder_name,-0.4)
+            img,img4,image_polar,xmin,xmax,ymin,ymax,vmin,vmax,coef=traitement(filename,
+                                                                               center=center_ellipse,
+                                                                               radius=400,PA=PA_image,inclinaison=Inclinaison_Image)
             
             
             # Affichage des plots
@@ -263,6 +271,7 @@ if __name__=="__main__":
                        vmax=vmax,
                        cmap='inferno', 
                        origin='lower')
+            plt.plot(center_ellipse[0],center_ellipse[1],'+',ms=10)
             plt.colorbar(cmap='inferno')
             plt.title('Image originale')
             
@@ -356,7 +365,7 @@ if __name__=="__main__":
             plt.ylim(0,400)
             
             plt.title('Image déprojetée avec PA = %s°, i = %s°'%(round(PA_image,ndigits=2),round(Inclinaison_Image,ndigits=2)))
-            # plt.savefig(Folder_name+'/spirales_flyby.png')
+            # plt.savefig(Folder_name+'/Spirales_%s_Correction_w_Ellipse.png'%(Numerofichier))
             # fin2=0  
             # for i in range(100):
                 # for k in range(np.shape(spiralesarrreel)[1]):

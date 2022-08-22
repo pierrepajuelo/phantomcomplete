@@ -38,7 +38,7 @@ def read_header( file ):
 
     return xmin[2],xmax[2],xmin[1],xmax[1],xmin[0],xmax[0]
 
-def traitement(filename,inclinaison=40.9,PA=60,radius=200):
+def traitement(filename,center=None,inclinaison=40.9,PA=60,radius=200):
     """
     Traitement d'une image au format .ascii et ressort l'image originale, l'image transformée et la projection polaire.
 
@@ -46,6 +46,8 @@ def traitement(filename,inclinaison=40.9,PA=60,radius=200):
     ----------
     filename : str
         Nom du fichier (au format 'folder/file').
+    center : tuple
+        Coordonnées du centre de l'ellipse.
     inclinaison : float
         Angle d'inclinaison du disque en degrés.
     PA : float
@@ -60,6 +62,17 @@ def traitement(filename,inclinaison=40.9,PA=60,radius=200):
     """    
     # Importation du fichier
     image_original = np.loadtxt(filename,skiprows=9)
+
+    #!!! Correction 22/08 !!!
+    # Correction du centre de l'image
+    # Point "2022"
+    if center==None:
+        rows_original,cols_original = np.shape(image_original)
+        image_original[int(rows_original/2)][int(cols_original/2)]=2022
+    else:
+        image_original[int(center[1])][int(center[0])]=2022
+    #!!! Fin Correction !!!
+
     # Récupère les données de l'image
     xmin,xmax,ymin,ymax,vmin,vmax = read_header(filename)
     # Transformation spatiale
@@ -72,8 +85,28 @@ def traitement(filename,inclinaison=40.9,PA=60,radius=200):
     image_transformed = cv2.resize(img2, (int(rows*coef), cols),interpolation = cv2.INTER_NEAREST)
     
     # Polaire
+    #!!! Correction 22/08 !!!
+    # Correction du centre de l'image après transformation
+    #plt.close('all')
+    #plt.figure()
+   # plt.imshow(
+   #     image_transformed,
+   #     cmap='inferno',
+   #     origin='lower',
+   #     vmax=0.1,
+   #     vmin=-0.4
+   # )
+   # plt.colorbar(cmap='inferno')
+   # plt.title('Image transformée')
+   # plt.show()
+
+    center_after = np.where(image_transformed>1)
+    center_after_tuple = (np.mean(center_after[0]),np.mean(center_after[1]))
+    image_transformed[int(center_after_tuple[0])][int(center_after_tuple[1])]=2022
+    # !!! Fin Correction !!!
+
     image = img_as_float(rotate(image_transformed,180))
-    image_polar = warp_polar(image, radius=radius) #, channel_axis=1)
+    image_polar = warp_polar(image, radius=radius, center=center_after_tuple) #, channel_axis=1)
     
     '''
     #Brouillon
